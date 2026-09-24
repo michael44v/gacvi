@@ -1,5 +1,23 @@
 <?php
 
+// Handle Global CORS Headers for all incoming requests (including preflight OPTIONS)
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+header('Access-Control-Max-Age: 86400');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit(0);
+}
+
+// Native PHP autoloader without Composer vendor dependencies
+if (file_exists(__DIR__ . '/../autoloader.php')) {
+    require_once __DIR__ . '/../autoloader.php';
+} else if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
+
 use App\Core\Router;
 use App\Core\Request;
 use App\Controllers\AuthController;

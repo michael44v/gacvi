@@ -4,7 +4,6 @@ namespace App\Core;
 
 class Router {
     private array $routes = [];
-    private array $middlewares = [];
 
     public function add(string $method, string $path, callable|array $handler, array $middlewares = []): void {
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[a-zA-Z0-9_-]+)', $path);
@@ -43,6 +42,11 @@ class Router {
         $method = $request->getMethod();
         $uri = $request->getUri();
 
+        // Allow subdirectory hosting by normalizing URI to start from /api/v1
+        if (($pos = strpos($uri, '/api/v1')) !== false) {
+            $uri = substr($uri, $pos);
+        }
+
         if ($method === 'OPTIONS') {
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
@@ -55,7 +59,6 @@ class Router {
             if ($route['method'] === $method && preg_match($route['pattern'], $uri, $matches)) {
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
 
-                // Run middlewares
                 foreach ($route['middlewares'] as $middleware) {
                     if (is_callable($middleware)) {
                         $middleware($request);
