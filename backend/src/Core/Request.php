@@ -62,12 +62,12 @@ class Request {
         return $this->headers[strtolower($name)] ?? $default;
     }
 
-    public function getQuery(?string $key = null, mixed $default = null): mixed {
+    public function getQuery(?string $key = null, $default = null) {
         if ($key === null) return $this->query;
         return $this->query[$key] ?? $default;
     }
 
-    public function getBody(?string $key = null, mixed $default = null): mixed {
+    public function getBody(?string $key = null, $default = null) {
         if ($key === null) return $this->body;
         return $this->body[$key] ?? $default;
     }

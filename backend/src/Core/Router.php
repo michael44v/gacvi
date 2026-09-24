@@ -5,7 +5,7 @@ namespace App\Core;
 class Router {
     private array $routes = [];
 
-    public function add(string $method, string $path, callable|array $handler, array $middlewares = []): void {
+    public function add(string $method, string $path, $handler, array $middlewares = []): void {
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<\1>[a-zA-Z0-9_-]+)', $path);
         $pattern = '#^' . $pattern . '$#';
 
@@ -18,23 +18,23 @@ class Router {
         ];
     }
 
-    public function get(string $path, callable|array $handler, array $middlewares = []): void {
+    public function get(string $path, $handler, array $middlewares = []): void {
         $this->add('GET', $path, $handler, $middlewares);
     }
 
-    public function post(string $path, callable|array $handler, array $middlewares = []): void {
+    public function post(string $path, $handler, array $middlewares = []): void {
         $this->add('POST', $path, $handler, $middlewares);
     }
 
-    public function patch(string $path, callable|array $handler, array $middlewares = []): void {
+    public function patch(string $path, $handler, array $middlewares = []): void {
         $this->add('PATCH', $path, $handler, $middlewares);
     }
 
-    public function put(string $path, callable|array $handler, array $middlewares = []): void {
+    public function put(string $path, $handler, array $middlewares = []): void {
         $this->add('PUT', $path, $handler, $middlewares);
     }
 
-    public function delete(string $path, callable|array $handler, array $middlewares = []): void {
+    public function delete(string $path, $handler, array $middlewares = []): void {
         $this->add('DELETE', $path, $handler, $middlewares);
     }
 

@@ -19,7 +19,7 @@ class Response {
         exit;
     }
 
-    public static function success(mixed $data = null, string $message = 'Success', int $statusCode = 200): void {
+    public static function success($data = null, string $message = 'Success', int $statusCode = 200): void {
         self::json([
             'status' => 'success',
             'message' => $message,
@@ -27,7 +27,7 @@ class Response {
         ], $statusCode);
     }
 
-    public static function error(string $message = 'An error occurred', int $statusCode = 400, mixed $errors = null): void {
+    public static function error(string $message = 'An error occurred', int $statusCode = 400, $errors = null): void {
         $payload = [
             'status' => 'error',
             'message' => $message
