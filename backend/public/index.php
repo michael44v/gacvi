@@ -11,7 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
+// Native PHP autoloader without Composer vendor dependencies
+if (file_exists(__DIR__ . '/../autoloader.php')) {
+    require_once __DIR__ . '/../autoloader.php';
+} else if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+}
 
 use App\Core\Router;
 use App\Core\Request;
