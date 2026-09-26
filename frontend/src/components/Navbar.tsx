@@ -20,8 +20,10 @@ export const Navbar: React.FC = () => {
   const closeMobile = () => setMobileOpen(false);
 
   return (
-    <nav className="gacvi-navbar">
-      <div className="navbar-inner">
+    <>
+      {mobileOpen && <div className="navbar-backdrop" onClick={closeMobile} />}
+      <nav className="gacvi-navbar">
+        <div className="navbar-inner">
 
         {/* Brand */}
         <Link to="/" className="navbar-brand" onClick={closeMobile}>
@@ -145,5 +147,6 @@ export const Navbar: React.FC = () => {
         )}
       </div>
     </nav>
+    </>
   );
 };

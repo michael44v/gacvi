@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import type { CourseOffering } from '../types';
 import { MapPin, CreditCard, ShieldCheck, BookOpen, AlertCircle, ArrowLeft, CheckCircle } from 'lucide-react';
+import './OfferingDetailPage.css';
 
 export const OfferingDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -65,23 +66,23 @@ export const OfferingDetailPage: React.FC = () => {
   if (!offering) return null;
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '40px auto', padding: '0 24px' }}>
+    <div className="offering-detail-container">
 
       <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--primary-navy)', fontWeight: '600', marginBottom: '24px' }}>
         <ArrowLeft size={18} /> Back to Catalog
       </Link>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '36px' }}>
+      <div className="offering-detail-grid">
 
         <div>
-          <div style={{ backgroundColor: 'var(--primary-navy)', color: '#FFFFFF', padding: '32px', borderRadius: 'var(--radius-lg)', marginBottom: '32px' }}>
+          <div className="offering-hero-card">
             <span className={`badge ${offering.delivery_mode === 'PHYSICAL' ? 'badge-physical' : 'badge-online'}`} style={{ marginBottom: '16px', display: 'inline-block' }}>
               {offering.delivery_mode === 'PHYSICAL' ? 'Physical Vocational Center' : 'Online LMS Offering'}
             </span>
-            <h1 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '12px' }}>{offering.title}</h1>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '12px' }}>{offering.title}</h1>
             <p style={{ color: '#E2E8F0', fontSize: '1rem', lineHeight: 1.5, marginBottom: '20px' }}>{offering.course_description}</p>
 
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px', fontSize: '0.9rem', color: '#CBD5E1' }}>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px', fontSize: '0.9rem', color: '#CBD5E1' }}>
               <div><strong>Code:</strong> {offering.course_code}</div>
               <div><strong>Category:</strong> {offering.course_category}</div>
               {offering.instructor_first_name && (
@@ -91,11 +92,11 @@ export const OfferingDetailPage: React.FC = () => {
           </div>
 
           {offering.delivery_mode === 'PHYSICAL' && (
-            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '24px', marginBottom: '32px', boxShadow: 'var(--shadow-sm)' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '20px', marginBottom: '24px', boxShadow: 'var(--shadow-sm)' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <MapPin color="var(--brand-red)" size={22} /> Physical Training Center & Classroom
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontSize: '0.95rem' }}>
+              <div className="offering-physical-grid">
                 <div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Training Center</div>
                   <strong>{offering.location_name || 'GACVI Main Campus'}</strong>
@@ -118,7 +119,7 @@ export const OfferingDetailPage: React.FC = () => {
             </div>
           )}
 
-          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '24px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '20px', boxShadow: 'var(--shadow-sm)' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <BookOpen size={22} color="var(--primary-navy)" /> Curriculum & Syllabus Breakdown
             </h3>
@@ -153,7 +154,7 @@ export const OfferingDetailPage: React.FC = () => {
         </div>
 
         <div>
-          <div style={{ backgroundColor: '#FFFFFF', border: '2px solid var(--accent-gold)', borderRadius: 'var(--radius-lg)', padding: '28px', boxShadow: 'var(--shadow-lg)', position: 'sticky', top: '96px' }}>
+          <div className="offering-checkout-card">
 
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>Course Offering Tuition</div>

@@ -380,15 +380,37 @@
 @media (max-width: 640px) {
   .hero-actions a,
   .cta-actions a {
-    flex: 1 1 auto;
+    width: 100%;
     text-align: center;
+    justify-content: center;
   }
 
   .core-values {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 
   .logo-bar span {
     max-width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .core-values {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.78rem;
+    padding: 4px 10px;
   }
 }

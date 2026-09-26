@@ -75,25 +75,25 @@ export const StudentPortal: React.FC = () => {
   if (loading) return <div style={{ textAlign: 'center', padding: '60px' }}>Loading Student LMS...</div>;
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '32px auto', padding: '0 24px' }}>
+    <div className="portal-page-container">
 
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--primary-navy)' }}>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '800', color: 'var(--primary-navy)' }}>
           Student Learning Management System (LMS)
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
           Access your enrolled active vocational courses, physical class schedules, video lectures, quizzes, and clinical assignments.
         </p>
       </div>
 
       {enrollments.length === 0 ? (
-        <div style={{ backgroundColor: '#FFFFFF', padding: '40px', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
+        <div style={{ backgroundColor: '#FFFFFF', padding: '32px 20px', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
           <BookOpen size={48} color="var(--primary-navy)" style={{ marginBottom: '16px' }} />
           <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '8px' }}>No Active Enrollments Found</h3>
           <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>Browse our physical or online course offerings catalog and enroll today.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '28px' }}>
+        <div className="portal-grid">
 
           <div>
             <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '16px', marginBottom: '20px', boxShadow: 'var(--shadow-sm)' }}>
@@ -170,7 +170,7 @@ export const StudentPortal: React.FC = () => {
           <div>
 
             {selectedEnrollment?.delivery_mode === 'PHYSICAL' && (
-              <div style={{ backgroundColor: '#FEF3C7', border: '1px solid #F59E0B', padding: '16px 20px', borderRadius: 'var(--radius-md)', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ backgroundColor: '#FEF3C7', border: '1px solid #F59E0B', padding: '16px 20px', borderRadius: 'var(--radius-md)', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
                   <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#92400E', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <MapPin size={18} color="#92400E" /> Physical Classroom Assignment
@@ -182,14 +182,14 @@ export const StudentPortal: React.FC = () => {
                     Schedule: {selectedEnrollment.schedule_description}
                   </div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
+                <div>
                   <span className="badge badge-active">Enrollment Active</span>
                 </div>
               </div>
             )}
 
             {selectedLesson ? (
-              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '28px', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '20px', boxShadow: 'var(--shadow-sm)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
                   <div>
                     <span className="badge badge-online" style={{ marginBottom: '8px', display: 'inline-block' }}>{selectedLesson.content_type}</span>
@@ -244,15 +244,16 @@ export const StudentPortal: React.FC = () => {
                               </div>
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 {options.map((opt: string, optIdx: number) => (
-                                  <label key={optIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}>
+                                  <label key={optIdx} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', cursor: 'pointer', padding: '8px 12px', borderRadius: '6px', backgroundColor: quizAnswers[q.id] === opt ? '#F1F5F9' : 'transparent', border: '1px solid', borderColor: quizAnswers[q.id] === opt ? 'var(--primary-navy)' : '#E2E8F0', minHeight: '44px' }}>
                                     <input
                                       type="radio"
                                       name={`question_${q.id}`}
                                       value={opt}
                                       checked={quizAnswers[q.id] === opt}
                                       onChange={() => setQuizAnswers({ ...quizAnswers, [q.id]: opt })}
+                                      style={{ width: '18px', height: '18px', flexShrink: 0 }}
                                     />
-                                    <span>{opt}</span>
+                                    <span style={{ lineHeight: 1.4 }}>{opt}</span>
                                   </label>
                                 ))}
                               </div>
@@ -264,7 +265,7 @@ export const StudentPortal: React.FC = () => {
                           onClick={() => handleQuizSubmit(selectedLesson.quiz.id)}
                           disabled={submittingQuiz}
                           className="btn-gold"
-                          style={{ padding: '12px 24px', alignSelf: 'flex-start' }}
+                          style={{ width: '100%', maxWidth: '280px' }}
                         >
                           {submittingQuiz ? 'Evaluating...' : 'Submit Quiz Answers'}
                         </button>
@@ -294,7 +295,7 @@ export const StudentPortal: React.FC = () => {
                           onChange={(e) => setAssignmentText(e.target.value)}
                           style={{ width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid var(--border-color)', fontFamily: 'inherit', fontSize: '0.9rem' }}
                         />
-                        <button onClick={() => handleAssignmentSubmit(selectedLesson.assignment.id)} className="btn-primary" style={{ alignSelf: 'flex-start' }}>
+                        <button onClick={() => handleAssignmentSubmit(selectedLesson.assignment.id)} className="btn-primary" style={{ width: '100%', maxWidth: '280px' }}>
                           Submit Assignment
                         </button>
                       </div>
