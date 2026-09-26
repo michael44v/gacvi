@@ -6,7 +6,6 @@ import { api } from '../services/api';
 import type { CourseOffering } from '../types';
 import {
   MapPin,
-  HeartPulse,
   ArrowRight,
   Stethoscope,
   ClipboardCheck,
