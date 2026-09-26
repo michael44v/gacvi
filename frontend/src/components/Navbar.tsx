@@ -1,66 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { GraduationCap, BookOpen, Award, LogOut, User as UserIcon, Shield, Users } from 'lucide-react';
+import { BookOpen, Award, LogOut, User as UserIcon, Shield, Users, Menu, X } from 'lucide-react';
+import logoUrl from '../assets/gacvi-logo.png';
+import './Navbar.css';
 
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
+    setMobileOpen(false);
     navigate('/login');
   };
 
   const hasRole = (role: string) => user?.roles?.includes(role);
+  const closeMobile = () => setMobileOpen(false);
 
   return (
-    <nav style={{ backgroundColor: 'var(--primary-navy)', color: '#FFFFFF', boxShadow: 'var(--shadow-md)', position: 'sticky', top: 0, zIndex: 100 }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <nav className="gacvi-navbar">
+      <div className="navbar-inner">
 
-        {/* Brand Header */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ backgroundColor: '#FFFFFF', padding: '6px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <GraduationCap size={28} color="var(--primary-navy)" />
+        {/* Brand */}
+        <Link to="/" className="navbar-brand" onClick={closeMobile}>
+          <div className="crest">
+            <img src={logoUrl} alt="GACVI crest" />
           </div>
           <div>
-            <div style={{ fontSize: '1.25rem', fontWeight: '800', letterSpacing: '0.5px', color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              GACVI <span style={{ color: 'var(--accent-gold)', fontSize: '0.85rem', fontWeight: '700' }}>ACADEMY</span>
-            </div>
-            <div style={{ fontSize: '0.65rem', color: '#94A3B8', letterSpacing: '0.3px', textTransform: 'uppercase' }}>
-              Giant Ambassadors Canadian Vocational Institute
-            </div>
+            <div className="brand-name">GACVI</div>
+            <div className="brand-sub">Giant Ambassadors Canadian Vocational Institute</div>
           </div>
         </Link>
 
-        {/* Navigation Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <Link to="/offerings" style={{ fontSize: '0.95rem', fontWeight: '600', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        {/* Desktop nav links */}
+        <div className="navbar-links">
+          <Link to="/offerings">
             <BookOpen size={18} /> Courses & Offerings
           </Link>
 
           {isAuthenticated && (
             <>
               {hasRole('STUDENT') && (
-                <Link to="/student" style={{ fontSize: '0.95rem', fontWeight: '600', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Link to="/student">
                   <Award size={18} /> My LMS Portal
                 </Link>
               )}
-
               {hasRole('TEACHER') && (
-                <Link to="/teacher" style={{ fontSize: '0.95rem', fontWeight: '600', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Link to="/teacher">
                   <Users size={18} /> Instructor Portal
                 </Link>
               )}
-
               {hasRole('PARENT') && (
-                <Link to="/parent" style={{ fontSize: '0.95rem', fontWeight: '600', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Link to="/parent">
                   <UserIcon size={18} /> Parent Portal
                 </Link>
               )}
-
               {(hasRole('ADMIN') || hasRole('SUPER_ADMIN')) && (
-                <Link to="/admin" style={{ fontSize: '0.95rem', fontWeight: '600', color: 'var(--accent-gold)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Link to="/admin" style={{ color: 'var(--accent-gold)' }}>
                   <Shield size={18} /> Admin Dashboard
                 </Link>
               )}
@@ -68,30 +66,83 @@ export const Navbar: React.FC = () => {
           )}
         </div>
 
-        {/* User Auth Buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {/* Desktop auth area */}
+        <div className="navbar-actions">
           {isAuthenticated ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div className="navbar-user">
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#FFFFFF' }}>{user?.first_name} {user?.last_name}</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--accent-gold)' }}>{user?.roles?.[0]}</div>
+                <div className="navbar-user-name">{user?.first_name} {user?.last_name}</div>
+                <div className="navbar-user-role">{user?.roles?.[0]}</div>
               </div>
-              <button onClick={handleLogout} style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF', padding: '8px 12px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
+              <button onClick={handleLogout} className="navbar-logout">
                 <LogOut size={16} /> Logout
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Link to="/login" className="btn-outline" style={{ borderColor: '#FFFFFF', color: '#FFFFFF', padding: '6px 16px', fontSize: '0.9rem' }}>
+            <div className="navbar-guest">
+              <Link to="/login" className="btn-outline" style={{ borderColor: '#FFFFFF', color: '#FFFFFF' }}>
                 Sign In
               </Link>
-              <Link to="/register" className="btn-gold" style={{ padding: '6px 16px', fontSize: '0.9rem' }}>
+              <Link to="/register" className="btn-gold">
                 Enroll Now
               </Link>
             </div>
           )}
-        </div>
 
+          {/* Mobile menu toggle */}
+          <button
+            className="navbar-toggle"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown panel */}
+      <div className={`navbar-mobile-panel ${mobileOpen ? 'open' : ''}`}>
+        <Link to="/offerings" onClick={closeMobile}>
+          <BookOpen size={18} /> Courses & Offerings
+        </Link>
+
+        {isAuthenticated ? (
+          <>
+            {hasRole('STUDENT') && (
+              <Link to="/student" onClick={closeMobile}>
+                <Award size={18} /> My LMS Portal
+              </Link>
+            )}
+            {hasRole('TEACHER') && (
+              <Link to="/teacher" onClick={closeMobile}>
+                <Users size={18} /> Instructor Portal
+              </Link>
+            )}
+            {hasRole('PARENT') && (
+              <Link to="/parent" onClick={closeMobile}>
+                <UserIcon size={18} /> Parent Portal
+              </Link>
+            )}
+            {(hasRole('ADMIN') || hasRole('SUPER_ADMIN')) && (
+              <Link to="/admin" onClick={closeMobile} style={{ color: 'var(--accent-gold)' }}>
+                <Shield size={18} /> Admin Dashboard
+              </Link>
+            )}
+            <button onClick={handleLogout}>
+              <LogOut size={18} /> Logout ({user?.first_name})
+            </button>
+          </>
+        ) : (
+          <div className="mobile-guest-actions">
+            <Link to="/login" className="btn-outline" style={{ borderColor: '#FFFFFF', color: '#FFFFFF' }} onClick={closeMobile}>
+              Sign In
+            </Link>
+            <Link to="/register" className="btn-gold" onClick={closeMobile}>
+              Enroll Now
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

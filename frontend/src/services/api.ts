@@ -1,8 +1,8 @@
 import type { User, Course, CourseOffering, Enrollment } from '../types';
 
 // Support configurable API base URL via environment variable or default relative route / direct server path
-const API_BASE = 'http://localhost:4000/api/v1';
-
+const API_BASE = 'https://gacvi.onrender.com/api/v1';
+//https://gacvi.onrender.com or http://localhost:4000
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('gacvi_token');
   const headers: Record<string, string> = {
