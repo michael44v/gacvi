@@ -33,25 +33,25 @@ export const ParentPortal: React.FC = () => {
   if (loading) return <div style={{ textAlign: 'center', padding: '60px' }}>Loading Parent / Guardian Portal...</div>;
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '32px auto', padding: '0 24px' }}>
+    <div className="portal-page-container">
 
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--primary-navy)' }}>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '800', color: 'var(--primary-navy)' }}>
           Parent & Guardian Monitoring Portal
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
           Read-only academic progress, physical attendance logs, quiz scores, and tuition invoice monitoring for your linked wards.
         </p>
       </div>
 
       {wards.length === 0 ? (
-        <div style={{ backgroundColor: '#FFFFFF', padding: '40px', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
+        <div style={{ backgroundColor: '#FFFFFF', padding: '32px 20px', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
           <UserCheck size={48} color="var(--primary-navy)" style={{ marginBottom: '16px' }} />
           <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '8px' }}>No Linked Students / Wards Found</h3>
           <p style={{ color: 'var(--text-muted)' }}>Please contact GACVI Administration to link your student ward account.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '28px' }}>
+        <div className="portal-grid">
 
           <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: 'var(--shadow-sm)' }}>
             <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase' }}>
@@ -93,13 +93,13 @@ export const ParentPortal: React.FC = () => {
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {wardData.enrollments.map((enr: any) => (
-                      <div key={enr.id} style={{ padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div key={enr.id} style={{ padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                         <div>
                           <div style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--accent-gold)' }}>{enr.delivery_mode}</div>
                           <div style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--primary-navy)' }}>{enr.offering_title}</div>
                           <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{enr.course_title}</div>
                         </div>
-                        <div style={{ textAlign: 'right' }}>
+                        <div>
                           <span className={`badge ${enr.status === 'ACTIVE' ? 'badge-active' : 'badge-pending'}`} style={{ marginBottom: '6px', display: 'inline-block' }}>
                             {enr.status}
                           </span>
@@ -120,30 +120,32 @@ export const ParentPortal: React.FC = () => {
                   {wardData.attendance.length === 0 ? (
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No physical class attendance recorded yet.</p>
                   ) : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
-                      <thead>
-                        <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left', color: 'var(--primary-navy)' }}>
-                          <th style={{ padding: '10px 14px' }}>Date</th>
-                          <th style={{ padding: '10px 14px' }}>Offering Cohort</th>
-                          <th style={{ padding: '10px 14px' }}>Attendance Status</th>
-                          <th style={{ padding: '10px 14px' }}>Instructor Remarks</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {wardData.attendance.map((att: any) => (
-                          <tr key={att.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                            <td style={{ padding: '12px 14px', fontWeight: '700' }}>{att.class_date}</td>
-                            <td style={{ padding: '12px 14px' }}>{att.offering_title}</td>
-                            <td style={{ padding: '12px 14px' }}>
-                              <span className={`badge ${att.status === 'PRESENT' ? 'badge-active' : 'badge-pending'}`}>
-                                {att.status}
-                              </span>
-                            </td>
-                            <td style={{ padding: '12px 14px', color: 'var(--text-muted)' }}>{att.remarks || 'Normal attendance'}</td>
+                    <div className="table-responsive">
+                      <table style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                        <thead>
+                          <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left', color: 'var(--primary-navy)' }}>
+                            <th style={{ padding: '10px 14px' }}>Date</th>
+                            <th style={{ padding: '10px 14px' }}>Offering Cohort</th>
+                            <th style={{ padding: '10px 14px' }}>Attendance Status</th>
+                            <th style={{ padding: '10px 14px' }}>Instructor Remarks</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {wardData.attendance.map((att: any) => (
+                            <tr key={att.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                              <td style={{ padding: '12px 14px', fontWeight: '700' }}>{att.class_date}</td>
+                              <td style={{ padding: '12px 14px' }}>{att.offering_title}</td>
+                              <td style={{ padding: '12px 14px' }}>
+                                <span className={`badge ${att.status === 'PRESENT' ? 'badge-active' : 'badge-pending'}`}>
+                                  {att.status}
+                                </span>
+                              </td>
+                              <td style={{ padding: '12px 14px', color: 'var(--text-muted)' }}>{att.remarks || 'Normal attendance'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </div>
 

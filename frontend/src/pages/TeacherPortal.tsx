@@ -66,18 +66,18 @@ export const TeacherPortal: React.FC = () => {
   if (loading) return <div style={{ textAlign: 'center', padding: '60px' }}>Loading Instructor Portal...</div>;
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '32px auto', padding: '0 24px' }}>
+    <div className="portal-page-container">
 
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--primary-navy)' }}>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '800', color: 'var(--primary-navy)' }}>
           Instructor Class & Attendance Portal
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
           Manage assigned physical training center cohorts, view enrolled student rosters, and log physical class attendance records.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '28px' }}>
+      <div className="portal-grid">
 
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: 'var(--shadow-sm)' }}>
           <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase' }}>
@@ -112,7 +112,7 @@ export const TeacherPortal: React.FC = () => {
           {selectedOffering ? (
             <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '24px', boxShadow: 'var(--shadow-sm)' }}>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
                   <span className={`badge ${selectedOffering.delivery_mode === 'PHYSICAL' ? 'badge-physical' : 'badge-online'}`} style={{ marginBottom: '6px', display: 'inline-block' }}>
                     {selectedOffering.delivery_mode}
@@ -153,49 +153,51 @@ export const TeacherPortal: React.FC = () => {
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No active student enrollments in this offering cohort.</p>
               ) : (
                 <div>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem', marginBottom: '20px' }}>
-                    <thead>
-                      <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left', color: 'var(--primary-navy)' }}>
-                        <th style={{ padding: '10px 14px' }}>Student Name</th>
-                        <th style={{ padding: '10px 14px' }}>Email / Contact</th>
-                        <th style={{ padding: '10px 14px' }}>Status</th>
-                        <th style={{ padding: '10px 14px' }}>Attendance Marking</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {students.map((st) => (
-                        <tr key={st.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                          <td style={{ padding: '12px 14px', fontWeight: '700' }}>
-                            {st.first_name} {st.last_name}
-                          </td>
-                          <td style={{ padding: '12px 14px', color: 'var(--text-muted)' }}>
-                            {st.email}
-                          </td>
-                          <td style={{ padding: '12px 14px' }}>
-                            <span className="badge badge-active">{st.enrollment_status}</span>
-                          </td>
-                          <td style={{ padding: '12px 14px' }}>
-                            <select
-                              value={attendance[st.id] || 'PRESENT'}
-                              onChange={(e) => setAttendance({ ...attendance, [st.id]: e.target.value })}
-                              style={{ padding: '6px 12px', borderRadius: '4px', border: '1px solid var(--border-color)', fontWeight: '600' }}
-                            >
-                              <option value="PRESENT">PRESENT</option>
-                              <option value="ABSENT">ABSENT</option>
-                              <option value="LATE">LATE</option>
-                              <option value="EXCUSED">EXCUSED</option>
-                            </select>
-                          </td>
+                  <div className="table-responsive">
+                    <table style={{ borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left', color: 'var(--primary-navy)' }}>
+                          <th style={{ padding: '10px 14px' }}>Student Name</th>
+                          <th style={{ padding: '10px 14px' }}>Email / Contact</th>
+                          <th style={{ padding: '10px 14px' }}>Status</th>
+                          <th style={{ padding: '10px 14px' }}>Attendance Marking</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {students.map((st) => (
+                          <tr key={st.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                            <td style={{ padding: '12px 14px', fontWeight: '700' }}>
+                              {st.first_name} {st.last_name}
+                            </td>
+                            <td style={{ padding: '12px 14px', color: 'var(--text-muted)' }}>
+                              {st.email}
+                            </td>
+                            <td style={{ padding: '12px 14px' }}>
+                              <span className="badge badge-active">{st.enrollment_status}</span>
+                            </td>
+                            <td style={{ padding: '12px 14px' }}>
+                              <select
+                                value={attendance[st.id] || 'PRESENT'}
+                                onChange={(e) => setAttendance({ ...attendance, [st.id]: e.target.value })}
+                                style={{ padding: '8px 12px', borderRadius: '4px', border: '1px solid var(--border-color)', fontWeight: '600', minHeight: '40px' }}
+                              >
+                                <option value="PRESENT">PRESENT</option>
+                                <option value="ABSENT">ABSENT</option>
+                                <option value="LATE">LATE</option>
+                                <option value="EXCUSED">EXCUSED</option>
+                              </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
                   <button
                     onClick={handleSaveAttendance}
                     disabled={savingAttendance}
                     className="btn-gold"
-                    style={{ padding: '12px 24px' }}
+                    style={{ width: '100%', maxWidth: '280px' }}
                   >
                     <Save size={18} /> {savingAttendance ? 'Saving Attendance...' : 'Save Attendance Log'}
                   </button>
