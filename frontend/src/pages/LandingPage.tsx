@@ -5,7 +5,6 @@ import 'aos/dist/aos.css';
 import { api } from '../services/api';
 import type { CourseOffering } from '../types';
 import {
-  MapPin,
   ArrowRight,
   Stethoscope,
   ClipboardCheck,
@@ -20,7 +19,7 @@ import {
 } from 'lucide-react';
 import './LandingPage.css';
 
-// Save the uploaded GACVI crest to src/assets/gacvi-logo.png and this import
+// Save the GACVI logo to src/assets/gacvi-logo.png and this import
 // will resolve. Swap the path if you store it elsewhere.
 import logoUrl from '../assets/gacvi-logo.png';
 
@@ -41,7 +40,7 @@ const PROGRAM_PATHWAYS = [
     icon: FileCheck2,
     title: 'Medical Office Administration',
     description:
-      'Scheduling, records management, and billing systems used across Canadian and Nigerian clinical offices.',
+      'Scheduling, records management, and billing systems used in clinical offices around the world.',
   },
   {
     icon: BookOpenCheck,
@@ -53,7 +52,7 @@ const PROGRAM_PATHWAYS = [
 
 const STATS = [
   { value: '500+', label: 'Program graduates' },
-  { value: '2', label: 'Countries — Canada & Nigeria' },
+  { value: 'Global', label: 'Students learning worldwide' },
   { value: '15+', label: 'Certified course offerings' },
   { value: '98%', label: 'Graduate job placement rate' },
 ];
@@ -84,13 +83,13 @@ const APPLICATION_STEPS = [
 const TESTIMONIALS = [
   {
     quote:
-      'The hybrid format let me keep working while I trained. My clinical hours at the Lagos center prepared me for the job I have now.',
+      'The hybrid format let me keep working while I trained. My clinical hours prepared me for the job I have now.',
     name: 'Ifeoma A.',
     program: 'Healthcare Assistant Graduate, 2025',
   },
   {
     quote:
-      'Instructors held us to the same standard as the Toronto cohort. That mattered when employers checked my certification.',
+      'Instructors held every cohort to the same standard. That mattered when employers checked my certification.',
     name: 'Daniel O.',
     program: 'Personal Support Worker Graduate, 2024',
   },
@@ -101,6 +100,12 @@ const TESTIMONIALS = [
     program: 'Medical Office Administration Graduate, 2025',
   },
 ];
+
+// Soft white wash laid over the logo so it reads as a background, not content.
+// Lower the 0.92 to make the logo more visible, raise it to make it fainter.
+const LOGO_BACKDROP_STYLE: React.CSSProperties = {
+  backgroundImage: `linear-gradient(rgba(248,250,252,0.92), rgba(248,250,252,0.92)), url(${logoUrl})`,
+};
 
 export const LandingPage: React.FC = () => {
   const [offerings, setOfferings] = useState<CourseOffering[]>([]);
@@ -122,6 +127,9 @@ export const LandingPage: React.FC = () => {
     });
   }, []);
 
+  // Only online courses are featured on the landing page.
+  const onlineOfferings = offerings.filter((off) => off.delivery_mode !== 'PHYSICAL');
+
   return (
     <div className="gacvi-landing">
 
@@ -131,7 +139,7 @@ export const LandingPage: React.FC = () => {
 
         <div className="hero-inner">
           <div className="logo-bar" data-aos="fade-down">
-           
+
           </div>
 
           <div className="hero-grid">
@@ -196,7 +204,7 @@ export const LandingPage: React.FC = () => {
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
                   <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--primary-navy)' }}>
-                    Toronto & Lagos Centers
+                    Global Centers
                   </div>
                   <div style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--brand-red)' }}>
                     $1,250.00 USD
@@ -220,146 +228,147 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* PROGRAM PATHWAYS */}
-      <section className="section">
-        <div className="section-heading" data-aos="fade-up">
-          <h2>Program Pathways</h2>
-          <p>Four routes into healthcare work, each built around the skills employers are hiring for right now.</p>
-        </div>
+      {/* LOGO BACKDROP: Program Pathways through From Our Graduates */}
+      <div className="logo-backdrop" style={LOGO_BACKDROP_STYLE}>
 
-        <div className="pathways-grid">
-          {PROGRAM_PATHWAYS.map((pathway, i) => {
-            const Icon = pathway.icon;
-            return (
-              <div key={pathway.title} className="pathway-card" data-aos="fade-up" data-aos-delay={i * 100}>
-                <div className="pathway-icon">
-                  <Icon size={24} color="var(--accent-gold)" />
-                </div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '8px' }}>
-                  {pathway.title}
-                </h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  {pathway.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* FEATURED COURSE OFFERINGS */}
-      <section className="section">
-        <div className="section-heading" data-aos="fade-up">
-          <h2>Featured Academic Course Offerings</h2>
-          <p>Choose between physical class offerings with clinical labs or flexible online LMS offerings.</p>
-        </div>
-
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px' }}>Loading course offerings...</div>
-        ) : (
-          <div className="offerings-grid">
-            {offerings.map((off, i) => (
-              <div key={off.id} className="offering-card" data-aos="fade-up" data-aos-delay={(i % 3) * 100}>
-                <div style={{ position: 'relative' }}>
-                  <img
-                    src={off.thumbnail_url || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600'}
-                    alt={off.title}
-                  />
-                  <span className={`badge ${off.delivery_mode === 'PHYSICAL' ? 'badge-physical' : 'badge-online'}`} style={{ position: 'absolute', top: '12px', right: '12px' }}>
-                    {off.delivery_mode === 'PHYSICAL' ? 'Physical Center' : 'Online LMS'}
-                  </span>
-                </div>
-
-                <div className="offering-body">
-                  <div>
-                    <div style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--accent-gold)', marginBottom: '4px' }}>
-                      {off.course_code} • {off.course_category}
-                    </div>
-                    <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '10px' }}>
-                      {off.title}
-                    </h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.4 }}>
-                      {off.schedule_description || 'Flexible schedule with certified instructors.'}
-                    </p>
-
-                    {off.delivery_mode === 'PHYSICAL' && off.location_name && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                        <MapPin size={16} color="var(--brand-red)" />
-                        <strong>Center:</strong> {off.location_name} ({off.classroom_name})
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', marginTop: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Tuition Fee</div>
-                      <div style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--primary-navy)' }}>
-                        ${off.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                      </div>
-                    </div>
-                    <Link to={`/offerings/${off.id}`} className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* HOW ENROLLMENT WORKS */}
-      <section className="steps-section">
-        <div className="section" style={{ margin: 0 }}>
+        {/* PROGRAM PATHWAYS */}
+        <section className="section">
           <div className="section-heading" data-aos="fade-up">
-            <h2>How Enrollment Works</h2>
-            <p>From application to certification, here's the path every student follows.</p>
+            <h2>Program Pathways</h2>
+            <p>Four routes into healthcare work, each built around the skills employers are hiring for right now.</p>
           </div>
 
-          <div className="steps-grid">
-            {APPLICATION_STEPS.map((step, i) => (
-              <div key={step.number} data-aos="fade-up" data-aos-delay={i * 120}>
-                <div className="step-number">{step.number}</div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '8px' }}>
-                  {step.title}
-                </h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  {step.description}
+          <div className="pathways-grid">
+            {PROGRAM_PATHWAYS.map((pathway, i) => {
+              const Icon = pathway.icon;
+              return (
+                <div key={pathway.title} className="pathway-card" data-aos="fade-up" data-aos-delay={i * 100}>
+                  <div className="pathway-icon">
+                    <Icon size={24} color="var(--accent-gold)" />
+                  </div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '8px' }}>
+                    {pathway.title}
+                  </h3>
+                  <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                    {pathway.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* FEATURED ONLINE COURSE OFFERINGS */}
+        <section className="section">
+          <div className="section-heading" data-aos="fade-up">
+            <h2>Featured Online Course Offerings</h2>
+            <p>Learn at your own pace with self-paced online LMS courses, available from anywhere in the world.</p>
+          </div>
+
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '40px' }}>Loading course offerings...</div>
+          ) : onlineOfferings.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
+              No online courses are available right now.
+            </div>
+          ) : (
+            <div className="offerings-grid">
+              {onlineOfferings.map((off, i) => (
+                <div key={off.id} className="offering-card" data-aos="fade-up" data-aos-delay={(i % 3) * 100}>
+                  <div style={{ position: 'relative' }}>
+                    <img
+                      src={off.thumbnail_url || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600'}
+                      alt={off.title}
+                    />
+                    <span className="badge badge-online" style={{ position: 'absolute', top: '12px', right: '12px' }}>
+                      Online LMS
+                    </span>
+                  </div>
+
+                  <div className="offering-body">
+                    <div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--accent-gold)', marginBottom: '4px' }}>
+                        {off.course_code} • {off.course_category}
+                      </div>
+                      <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '10px' }}>
+                        {off.title}
+                      </h3>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.4 }}>
+                        {off.schedule_description || 'Flexible schedule with certified instructors.'}
+                      </p>
+                    </div>
+
+                    {/* No price here: it is shown on the View Details page */}
+                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', marginTop: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-muted)' }}>
+                        Self-paced • Online
+                      </span>
+                      <Link to={`/offerings/${off.id}`} className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* HOW ENROLLMENT WORKS */}
+        <section className="steps-section">
+          <div className="section" style={{ margin: 0 }}>
+            <div className="section-heading" data-aos="fade-up">
+              <h2>How Enrollment Works</h2>
+              <p>From application to certification, here's the path every student follows.</p>
+            </div>
+
+            <div className="steps-grid">
+              {APPLICATION_STEPS.map((step, i) => (
+                <div key={step.number} className="step-item" data-aos="fade-up" data-aos-delay={i * 120}>
+                  <div className="step-number">{step.number}</div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--primary-navy)', marginBottom: '8px' }}>
+                    {step.title}
+                  </h3>
+                  <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                    {step.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TESTIMONIALS */}
+        <section className="section">
+          <div className="section-heading" data-aos="fade-up">
+            <h2>From Our Graduates</h2>
+          </div>
+
+          <div className="testimonials-grid">
+            {TESTIMONIALS.map((t, i) => (
+              <div key={t.name} className="testimonial-card" data-aos="fade-up" data-aos-delay={i * 100}>
+                <Quote size={22} color="var(--accent-gold)" style={{ marginBottom: '14px' }} />
+                <p style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '20px' }}>
+                  {t.quote}
                 </p>
+                <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--primary-navy)' }}>{t.name}</div>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t.program}</div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* TESTIMONIALS */}
-      <section className="section">
-        <div className="section-heading" data-aos="fade-up">
-          <h2>From Our Graduates</h2>
-        </div>
-
-        <div className="testimonials-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <div key={t.name} className="testimonial-card" data-aos="fade-up" data-aos-delay={i * 100}>
-              <Quote size={22} color="var(--accent-gold)" style={{ marginBottom: '14px' }} />
-              <p style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '20px' }}>
-                {t.quote}
-              </p>
-              <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--primary-navy)' }}>{t.name}</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t.program}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      </div>
+      {/* END LOGO BACKDROP */}
 
       {/* WHY GACVI */}
       <section className="why-section">
         <div className="why-grid">
           <div data-aos="fade-up">
             <Building2 size={28} color="var(--accent-gold)" style={{ marginBottom: '14px' }} />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '8px' }}>Dual-country centers</h3>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '8px' }}>Global centers</h3>
             <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.5 }}>
-              Physical training locations in Toronto and Lagos, sharing one accredited curriculum.
+              Physical training centers and online learning open to students worldwide, all sharing one accredited curriculum.
             </p>
           </div>
           <div data-aos="fade-up" data-aos-delay="100">
@@ -380,7 +389,7 @@ export const LandingPage: React.FC = () => {
             <Award size={28} color="var(--accent-gold)" style={{ marginBottom: '14px' }} />
             <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '8px' }}>Career placement support</h3>
             <p style={{ fontSize: '0.88rem', color: '#94A3B8', lineHeight: 1.5 }}>
-              Graduate support connecting students to employers across both training regions.
+              Graduate support connecting students to employers around the world.
             </p>
           </div>
         </div>

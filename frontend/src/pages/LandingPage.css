@@ -175,6 +175,17 @@
   margin-top: 4px;
 }
 
+/* ---------- Logo backdrop (Program Pathways -> From Our Graduates) ----------
+   The background-image itself (white wash + GACVI logo) is set inline in
+   LandingPage.tsx via LOGO_BACKDROP_STYLE. Layer 1 = white wash, layer 2 = logo. */
+
+.logo-backdrop {
+  background-color: #F8FAFC;
+  background-repeat: no-repeat, repeat-y;
+  background-position: center top, center top;
+  background-size: 100% 100%, min(880px, 100%) auto;
+}
+
 /* ---------- Generic section shell ---------- */
 
 .section {
@@ -275,8 +286,14 @@
 /* ---------- How it works ---------- */
 
 .steps-section {
-  background-color: #EEF2F7;
+  /* Semi-transparent so the logo backdrop shows through */
+  background-color: rgba(238, 242, 247, 0.6);
   padding: clamp(48px, 8vw, 80px) 24px;
+}
+
+/* Centered step content */
+.step-item {
+  text-align: center;
 }
 
 .step-number {
@@ -380,37 +397,15 @@
 @media (max-width: 640px) {
   .hero-actions a,
   .cta-actions a {
-    width: 100%;
+    flex: 1 1 auto;
     text-align: center;
-    justify-content: center;
   }
 
   .core-values {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
   }
 
   .logo-bar span {
     max-width: 220px;
-  }
-}
-
-@media (max-width: 480px) {
-  .core-values {
-    grid-template-columns: 1fr;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.78rem;
-    padding: 4px 10px;
   }
 }
