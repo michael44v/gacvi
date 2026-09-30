@@ -8,7 +8,13 @@ import { StudentPortal } from './pages/StudentPortal';
 import { TeacherPortal } from './pages/TeacherPortal';
 import { ParentPortal } from './pages/ParentPortal';
 import { AdminDashboard } from './pages/AdminDashboard';
-import { LoginPage } from './pages/LoginPage';
+import {
+  LoginPage,
+  StudentLoginPage,
+  TeacherLoginPage,
+  AdminLoginPage,
+  ParentLoginPage,
+} from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement; allowedRoles?: string[] }> = ({ children, allowedRoles }) => {
@@ -40,6 +46,10 @@ export const App: React.FC = () => {
               <Route path="/offerings" element={<LandingPage />} />
               <Route path="/offerings/:id" element={<OfferingDetailPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/login/student" element={<StudentLoginPage />} />
+              <Route path="/login/teacher" element={<TeacherLoginPage />} />
+              <Route path="/login/admin" element={<AdminLoginPage />} />
+              <Route path="/login/parent" element={<ParentLoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
 
               <Route
