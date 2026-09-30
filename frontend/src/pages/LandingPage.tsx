@@ -207,7 +207,7 @@ export const LandingPage: React.FC = () => {
                     Global Centers
                   </div>
                   <div style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--brand-red)' }}>
-                    $1,250.00 USD
+                     
                   </div>
                 </div>
               </div>
